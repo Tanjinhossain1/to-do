@@ -1,10 +1,28 @@
 import React from 'react';
 
 const AddTask = () => {
+    const handleAddTask = (event) =>{
+        event.preventDefault()
+        const name = event.target.name.value;
+        const description = event.target.description.value;
+       const todoDetail = {name,description}
+       fetch('http://localhost:5000/addTodo',{
+           method: 'POST',
+           headers:{
+               'content-type':'application/json'
+           },
+           body: JSON.stringify(todoDetail)
+       })
+       .then(res=>res.json())
+       .then(data=>{
+        console.log(data);
+        event.target.reset()
+       })
+    }
     return (
-        <div>
-
-            <form className='w-1/4 mt-12 mx-auto'>
+        <div className='mt-6 '>
+            <h1 className='text-3xl text-center text-green-700 font-semibold'>Add Your Task</h1>
+            <form onSubmit={handleAddTask} className='w-full shadow-2xl p-4 rounded-lg  mx-auto'>
                 <label class="label">
                     <span class="label-text">Task Name</span>
                 </label>
@@ -14,7 +32,9 @@ const AddTask = () => {
                     <span class="label-text">Task Description</span>
                 </label>
                 <input type="text" name='description' placeholder="Task Description" class="input input-bordered input-primary w-full max-w-xs" />
-                <input type="submit" value="Add Task" />
+               <div className='mx-auto text-center'>
+               <input className='btn btn-wide   mt-4' type="submit" value="Add Task" />
+               </div>
             </form>
         </div>
     );

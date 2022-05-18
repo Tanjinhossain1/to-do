@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
     const navItems = <>
         <li><Link to='/home'>Home</Link></li>
-        <li><Link to='/addTask'>Add Task</Link></li>
     </>
+    
     return (
         <div>
             <div class="navbar bg-base-100">
@@ -20,7 +20,7 @@ const Navbar = () => {
                             </li>
                         </ul>
                     </div>
-                    <Link to='/home' class="btn btn-ghost normal-case text-xl">daisyUI</Link>
+                    <Link to='/home' class="btn btn-ghost normal-case text-xl">TODO</Link>
                 </div>
                 <div class="navbar-center hidden lg:flex">
                     <ul class="menu menu-horizontal p-0">
