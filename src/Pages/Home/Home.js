@@ -4,8 +4,6 @@ import AddTask from '../AddTask/AddTask';
 import Todo from './Todo';
 
 const Home = () => {
-    // const [todos, setTodos] = useState([]);
-
     const { isLoading, error, data: todos,refetch } = useQuery('repoData', () =>
         fetch('http://localhost:5000/todo').then(res =>
             res.json()
@@ -14,11 +12,7 @@ const Home = () => {
     if(isLoading){
         return <div className='text-center mt-12'><button class="btn loading">loading</button></div>
     }
-    // useEffect(() => {
-    //     fetch('http://localhost:5000/todo')
-    //         .then(res => res.json())
-    //         .then(data => setTodos(data))
-    // }, [])
+
     return (
         <div>
             <div class="drawer drawer-mobile">
@@ -31,6 +25,7 @@ const Home = () => {
                                 <tr>
                                     <th>Name</th>
                                     <th>Description</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

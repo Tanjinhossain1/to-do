@@ -2,6 +2,7 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 const AddTask = ({ todos, refetch }) => {
+    
     const handleAddTask = (event) => {
         event.preventDefault()
         const name = event.target.name.value;
