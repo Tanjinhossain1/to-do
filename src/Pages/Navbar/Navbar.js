@@ -5,7 +5,6 @@ const Navbar = () => {
     const navItems = <>
         <li><Link to='/home'>Home</Link></li>
     </>
-    
     return (
         <div>
             <div class="navbar bg-base-100">

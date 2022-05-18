@@ -1,23 +1,29 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 
-const AddTask = () => {
-    const handleAddTask = (event) =>{
+const AddTask = ({ todos, refetch }) => {
+    const handleAddTask = (event) => {
         event.preventDefault()
         const name = event.target.name.value;
         const description = event.target.description.value;
-       const todoDetail = {name,description}
-       fetch('http://localhost:5000/addTodo',{
-           method: 'POST',
-           headers:{
-               'content-type':'application/json'
-           },
-           body: JSON.stringify(todoDetail)
-       })
-       .then(res=>res.json())
-       .then(data=>{
-        console.log(data);
-        event.target.reset()
-       })
+        const todoDetail = { name, description }
+      
+            fetch('http://localhost:5000/addTodo', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(todoDetail)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    refetch();
+                    toast('Task Add SuccessFully')
+                    event.target.reset()
+                })
+        
+
     }
     return (
         <div className='mt-6 '>
@@ -32,9 +38,9 @@ const AddTask = () => {
                     <span class="label-text">Task Description</span>
                 </label>
                 <input type="text" name='description' placeholder="Task Description" class="input input-bordered input-primary w-full max-w-xs" />
-               <div className='mx-auto text-center'>
-               <input className='btn btn-wide   mt-4' type="submit" value="Add Task" />
-               </div>
+                <div className='mx-auto text-center'>
+                    <input className='btn btn-wide   mt-4' type="submit" value="Add Task" />
+                </div>
             </form>
         </div>
     );
