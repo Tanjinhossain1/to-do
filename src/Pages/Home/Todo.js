@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 
 const Todo = ({ todo, refetch }) => {
     const { name, description, _id } = todo;
+    const [compleat, setCompleat] = useState(false);
+    // delete one Todo handler
     const deleteTodo = (id) => {
         const confirmDelete = window.confirm('Are You Sure To Delete It?');
         if (confirmDelete) {
@@ -12,26 +14,29 @@ const Todo = ({ todo, refetch }) => {
                 .then(res => res.json())
                 .then(data => {
                     console.log(data)
-                    toast('Task Delete SuccessFully')
+                    toast.success('Task Delete SuccessFully')
                     refetch()
                 })
         }
     }
-    const [compleat,setCompleat] = useState(false);
 
     return (
         <tr>
-            <th>{compleat ? <strike>{name}</strike>: `${name}`
+            <th>{compleat ? <strike>{name}</strike> : `${name}`
             }</th>
-            <td>{description}</td>
-
-            <td><label onClick={()=>{
+            <th>{compleat ? <strike>{description}</strike> : `${description}`
+            }</th>
+            <td><button onClick={() => {
                 const confirmCompleat = window.confirm('Can You Compleat The Task');
-                if(confirmCompleat){  
-                    setCompleat(!compleat)
-                    toast('Nice You Compleat The Task')
+                if (confirmCompleat) {
+                    if (!compleat) {
+                        setCompleat(true)
+                        toast('Nice You Compleat The Task')
+                    } else {
+                        toast('Already Compleat The Task')
+                    }
                 }
-            }} for="compleatModal" class="btn btn-outline rounded-lg modal-button">Compleat</label>
+            }} class="btn btn-outline rounded-lg modal-button">Compleat</button>
             </td>
             <td>
                 <button onClick={() => deleteTodo(_id)} class="btn btn-circle btn-error text-white">

@@ -1,30 +1,31 @@
 import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
+import auth from '../../firebase.init';
 
 const AddTask = ({ todos, refetch }) => {
-    
+    const [user] = useAuthState(auth)
     const handleAddTask = (event) => {
         event.preventDefault()
         const name = event.target.name.value;
         const description = event.target.description.value;
-        const todoDetail = { name, description }
-      
-            fetch('http://localhost:5000/addTodo', {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(todoDetail)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    refetch();
-                    toast('Task Add SuccessFully')
-                    event.target.reset()
-                })
-        
+        const email = user?.email
+        const todoDetail = { name, description,email }
 
+        fetch('http://localhost:5000/addTodo', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(todoDetail)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                refetch();
+                toast.success('Task Add SuccessFully')
+                event.target.reset()
+            })
     }
     return (
         <div className='mt-6 '>
