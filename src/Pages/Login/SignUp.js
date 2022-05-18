@@ -1,39 +1,47 @@
-import React from 'react';
-import auth from '../../firebase.init';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
-import { toast } from 'react-toastify';
+import React, { useState } from 'react';
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import auth from '../../firebase.init';
 
-const Login = () => {
-    const [signInWithGoogle, user, googleLoading] = useSignInWithGoogle(auth);
+const SignUp = () => {
+    const [error, setError] = useState('')
+    const [signInWithGoogle, googleUser, googleLoading] = useSignInWithGoogle(auth);
     const [
-        signInWithEmailAndPassword,
-        emailUser,
+        createUserWithEmailAndPassword,
+        user,
         loading,
-    ] = useSignInWithEmailAndPassword(auth);
-
+    ] = useCreateUserWithEmailAndPassword(auth);;
+    console.log(user)
     const location = useLocation()
     let from = location.state?.from?.pathname || "/";
     const navigate = useNavigate()
-    if (user || emailUser) {
+    if (user || googleUser) {
         navigate(from, { replace: true });
         toast.success('login is done')
     }
     if (googleLoading || loading) {
         return <div className='text-center mt-32 mb-72'><button class="btn loading">loading</button></div>
     }
-    const handleLogin = event => {
+    const handleSignUp = event => {
         event.preventDefault();
         const email = event.target.email.value;
         const password = event.target.password.value;
-        signInWithEmailAndPassword(email, password)
+        const confirmPassword = event.target.confirmPassword.value;
+        if (password === confirmPassword) {
+            createUserWithEmailAndPassword(email, password)
+        }
+        else {
+            setError("Password Don't Matched ")
+        }
     }
     return (
         <div>
             <div class=" w-1/4 mx-auto mt-12  ">
                 <div class="">
                     <div class="card px-4 flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                        <form onSubmit={handleLogin} class="card-body">
+                        <form onSubmit={handleSignUp} class="card-body">
+                            <p className='text-center text-blue-800 text-xl font-bold'>Sign Up</p>
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text">Email</span>
@@ -45,11 +53,15 @@ const Login = () => {
                                     <span class="label-text">Password</span>
                                 </label>
                                 <input type="text" name='password' placeholder="password" class="input input-bordered" />
-                                <label class="label">
-                                    <button href="#" class="label-text-alt link link-hover">Forgot password?</button>
-                                </label>
                             </div>
-                            <p><small>Don't Have An Account? <Link className='text-blue-600 font-semibold' to='/signUp'>Create New Account</Link></small></p>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Confirm Password</span>
+                                </label>
+                                <input type="text" name='confirmPassword' placeholder="confirm Password" class="input input-bordered" />
+                            </div>
+                            <p><small>Already Have An Account? <Link className='text-blue-600 font-semibold' to='/login'>Login</Link></small></p>
+                            <p className='text-red-600'>{error}</p>
                             <div class="form-control mt-6">
                                 <button class="btn btn-primary">Login</button>
                             </div>
@@ -65,4 +77,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SignUp;

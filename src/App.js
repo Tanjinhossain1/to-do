@@ -9,6 +9,7 @@ import AllTodo from './Pages/AllTodo/AllTodo';
 import RequireAuth from './Pages/RequireAuth/RequireAuth';
 import Footer from './Pages/Footer/Footer';
 import NotFound from './Pages/NotFound/NotFound';
+import SignUp from './Pages/Login/SignUp';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='/home' element={<Home />}></Route>
         <Route path='/login' element={<Login />}></Route>
+        <Route path='/signUp' element={<SignUp />}></Route>
         <Route path='/allTodo' element={<RequireAuth><AllTodo /></RequireAuth>}></Route>
         <Route path='*' element={<NotFound />}></Route>
       </Routes>
